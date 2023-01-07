@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+</head>
+<body>
+    HomePage
+    <div class="homepage">
+        
+        <form method="GET" action="{% url 'search' %}">
+            <h3>Author</h3>
+            <input type="text" class='inp' name = 'author' placeholder="author" />
+
+            <h3>Genre</h3>
+            <input type="text" class='inp' name = 'genre' placeholder="genre" />
+
+            <h3>A Book You Liked</h3>
+            <input type="text" class='inp' name = 'liked' placeholder="Previously Liked" />
+
+            <br><br><br>
+            <input type="submit" value="Submit" placeholder="Submit">
+        </form>
+
+    </div>
+</body>
+</html>

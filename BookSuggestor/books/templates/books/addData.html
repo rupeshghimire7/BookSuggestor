@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Data
+{% endblock %}
+
+
+{% block content %}
+
+<form method="POST" action="{% url 'add' %}">
+    {% csrf_token %}
+
+    {{genForm.as_p}}
+    {{authForm.as_p}}
+    {{bkForm.as_p}}
+
+    <input type="submit" style="color: blue;">
+
+</form>
+
+<h3>ALL BOOKS AVAILABLE ARE:</h3>
+<ul>
+    <li> </li>
+</ul>
+
+{% endblock %}

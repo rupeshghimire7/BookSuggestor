@@ -29,14 +29,14 @@ def addData(request):
         bf = BookForm(request.POST, request.FILES)
         if bf.is_valid():
             b = bf.save(commit=False)
-            print(b.name.upper())
             if b.name.upper() in book_names:
                 pass
             else: 
-                a = Author.objects.create(aname=auth_name)
+                a = Author.objects.create(aname=auth_name.upper())
                 a.save()
-                g = Genre.objects.create(type=gen_type)
+                g = Genre.objects.create(type=gen_type.upper())
                 g.save()
+                b.name = b.name.upper()
                 b.genre = g
                 b.author = a
                 b.save()
@@ -47,7 +47,7 @@ def addData(request):
 
 
 
-    context = {'books':books, 'authForm':af, 'bkForm':bf, 'genForm':gf}
+    context = {'books':books, 'authForm':af, 'bkForm':bf, 'genForm':gf,'count':count}
 
     return render(request, 'books/addData.html', context)
 

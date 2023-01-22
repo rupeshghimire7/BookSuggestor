@@ -28,3 +28,14 @@ class BookForm(ModelForm):
         labels={
             'name':'Book Name',
         }
+
+
+
+class SearchForm(ModelForm):
+    class Meta:
+        model = Book
+        # fields = "__all__"
+        exclude = ['created_at']
+        labels={
+            'name':'Book Name',
+        }

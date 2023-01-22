@@ -5,34 +5,49 @@ from books.forms import AuthorForm, BookForm, GenreForm
 
 
 def addData(request):
-    authForm = AuthorForm()
-    bkForm = BookForm()
-    genForm = GenreForm()
+
+    books = Book.objects.all()
+    book_names=[]
+    for book in books:
+        book_names.append(book.name.upper())
+    count = len(book_names)
+
 
     if request.method == "POST":
         af = AuthorForm(request.POST)
         if af.is_valid():
             auth_name = af.cleaned_data['aname']
+            auth_name.capitalize()
+
 
         gf = GenreForm(request.POST)
         if gf.is_valid():
             gen_type = gf.cleaned_data['type']
+            gen_type.capitalize()
 
-        bf = BookForm(request.POST)
+
+        bf = BookForm(request.POST, request.FILES)
         if bf.is_valid():
-            book_name = bf.cleaned_data["name"]
-            # author = bf.cleaned_data["author"]
-            book_photo = bf.cleaned_data["photo"]
-            # genre = bf.cleaned_data["genre"]
+            b = bf.save(commit=False)
+            print(b.name.upper())
+            if b.name.upper() in book_names:
+                pass
+            else: 
+                a = Author.objects.create(aname=auth_name)
+                a.save()
+                g = Genre.objects.create(type=gen_type)
+                g.save()
+                b.genre = g
+                b.author = a
+                b.save()
+    else:
+        af = AuthorForm()
+        bf = BookForm()
+        gf = GenreForm()
 
-        a = Author.objects.create(aname=auth_name)
-        a.save()
-        g = Genre.objects.create(type=gen_type)
-        g.save()
-        b = Book.objects.create(name=book_name,photo=book_photo,genre=g,author=a)
 
-    books = Book.objects.all()
-    context = {'books':books, 'authForm':authForm, 'bkForm':bkForm, 'genForm':genForm}
+
+    context = {'books':books, 'authForm':af, 'bkForm':bf, 'genForm':gf}
 
     return render(request, 'books/addData.html', context)
 

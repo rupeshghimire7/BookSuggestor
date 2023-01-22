@@ -1,13 +1,27 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
 
-{% block title %}
-Add Data
-{% endblock %}
-
-
-{% block content %}
-
-<form method="POST" action="{% url 'add' %}">
+    <style>
+        table,th,td{
+            border: 2px solid black;
+        }
+        td{
+            padding: 2px 10px 2px 10px;
+        }
+    
+    </style>
+    
+    <title>Add Data</title>
+</head>
+<body>
+    
+    
+<form method="POST" enctype="multipart/form-data" action="{% url 'add' %}">
     {% csrf_token %}
 
     {{genForm.as_p}}
@@ -19,8 +33,26 @@ Add Data
 </form>
 
 <h3>ALL BOOKS AVAILABLE ARE:</h3>
-<ul>
-    <li> </li>
-</ul>
+<table>
 
-{% endblock %}
+    <tr>
+        <th>S.No.</th>
+        <th>Book Name</th>
+        <th>Author</th>
+        <th>Genre</th>
+    </tr>
+
+    {% for book in books %}
+    <tr>
+        <td>{{book.id}}</td>
+        <td>{{book.name}}</td>
+        <td>{{book.author}}</td>
+        <td>{{book.genre}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+
+</body>
+</html>

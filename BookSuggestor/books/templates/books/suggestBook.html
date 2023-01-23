@@ -11,6 +11,16 @@ Suggestor
 <form method="POST" action="{% url 'search' %}">
     {% csrf_token %}
 
+    <div class="dropdown">
+        <button class="dropbtn">Books You Liked:</button>
+        <div class="dropdown-content">
+            {% for book in books %}
+            <a href=""> {{book.name}} </a>
+            {% endfor %}
+        </div>
+      </div>
+
+    <input type="" >
     {{form.as_p}}
 
 

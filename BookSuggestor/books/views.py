@@ -53,21 +53,29 @@ def addData(request):
 
 
 def bookSuggestor(request):
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            liked = form.cleaned_data['name']
-            genre = form.cleaned_data["genre"]
-            author = form.cleaned_data["author"]
-    else:
-        form = SearchForm()
+    form = SearchForm()
     
-    context = {'form':form }
-
+    books = Book.objects.all()
+    book_list = []
+    for book in books:
+        if (book.name.upper() in book_list):
+            pass
+        else:
+            book_list.append(book.name.upper())
+    context = {'form':form,'books':book_list}
     return render(request, 'books/suggestBook.html',context )
 
+
+
 def bookSearch(request):
-    pass
+    form = SearchForm(request.POST)
+    if form.is_valid():
+        liked = form.cleaned_data['name']
+        genre = form.cleaned_data["genre"]
+        author = form.cleaned_data["author"]
+    bk_likes = Book.objects.get(name=liked)
+    bk_genres = Book.objects.get(genre=genre)
+    bk_authors = Book.objects.get(author=author)
 
 def bookDetails(request):
     pass

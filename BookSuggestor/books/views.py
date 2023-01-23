@@ -1,8 +1,7 @@
 from django.db import models
 from django.shortcuts import render, redirect
 from books.models import Book, Genre, Author
-from books.forms import AuthorForm, BookForm, GenreForm
-
+from books.forms import AuthorForm, BookForm, GenreForm, SearchForm
 
 def addData(request):
 
@@ -54,7 +53,18 @@ def addData(request):
 
 
 def bookSuggestor(request):
-    pass
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            liked = form.cleaned_data['name']
+            genre = form.cleaned_data["genre"]
+            author = form.cleaned_data["author"]
+    else:
+        form = SearchForm()
+    
+    context = {'form':form }
+
+    return render(request, 'books/suggestBook.html',context )
 
 def bookSearch(request):
     pass

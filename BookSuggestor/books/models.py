@@ -29,11 +29,7 @@ class Book(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False)
     genre = models.ForeignKey(Genre,on_delete=models.CASCADE,default='')
     author = models.ForeignKey(Author,on_delete=models.CASCADE,default='')
-    photo = models.ImageField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['created_at']
+    photo = models.ImageField(blank=True,default='media/Hustle.png')
 
     def __str__(self):
         return self.name

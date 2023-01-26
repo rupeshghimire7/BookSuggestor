@@ -24,7 +24,7 @@ class BookForm(ModelForm):
     class Meta:
         model = Book
         # fields = "__all__"
-        exclude = ['created_at','genre','author']
+        exclude = ['genre','author']
         labels={
             'name':'Book Name',
         }

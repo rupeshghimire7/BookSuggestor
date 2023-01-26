@@ -24,9 +24,9 @@
 <form method="POST" enctype="multipart/form-data" action="{% url 'add' %}">
     {% csrf_token %}
 
-    {{genForm.as_p}}
-    {{authForm.as_p}}
-    {{bkForm.as_p}}
+    {{gf.as_p}}
+    {{af.as_p}}
+    {{bf.as_p}}
 
     <input type="submit" style="color: blue;">
 
@@ -44,7 +44,7 @@
 
     {% for book in books %}
     <tr>
-        <td>{{book.id}}</td>
+        <td>{{book}}</td>
         <td>{{book.name}}</td>
         <td>{{book.author}}</td>
         <td>{{book.genre}}</td>

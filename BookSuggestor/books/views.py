@@ -1,5 +1,5 @@
 from django.db import models
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from books.models import Book, Genre, Author
 from books.forms import AuthorForm, BookForm, GenreForm, SearchForm
 from django.db import connection
@@ -97,7 +97,7 @@ def bookSuggestor(request):
 
 
 def bookSearch(request):
-    pass
+    return HttpResponse("CALL CHAI VAXA HAI")
 
 
 

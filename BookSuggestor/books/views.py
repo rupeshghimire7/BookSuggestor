@@ -62,7 +62,7 @@ def addData(request):
                 # a = Author.objects.create(aname=auth_name.upper())
                 # a.save()
                 cursor.execute("INSERT into books_author (aname) VALUES (%s)", [auth_name.upper()])
-                cursor.execute("SELECT id FROM books_author WHERE type=%s",[auth_name.upper()])
+                cursor.execute("SELECT id FROM books_author WHERE aname=%s",[auth_name.upper()])
                 a = cursor.fetchone()
                 print("author id : ",a)
     #             # g = Genre.objects.create(type=gen_type.upper())
@@ -72,7 +72,7 @@ def addData(request):
                 g = cursor.fetchone()
 
 
-    #             cursor.execute("INSERT into books_book (name,author_id,genre_id) VALUES(%(name)s, %(a)s, %(g)s)",{'name':b.name.upper(), 'a':a, 'g':g})
+                cursor.execute("INSERT into books_book (name,author_id,genre_id) VALUES(%(name)s, %(a)s, %(g)s)",{'name':b.name.upper(), 'a':a, 'g':g})
     else:
         af = AuthorForm()
         bf = BookForm()
@@ -82,17 +82,15 @@ def addData(request):
 
     context = {'books':book_names, 'authForm':af, 'bkForm':bf, 'genForm':gf,'count':count}
 
-    return render(request, 'books/addData.html')
+    return render(request, 'books/addData.html',context)
 
 
 
 def bookSuggestor(request):
     form = SearchForm()
-    
     book_list = getbooks()
-    
     context = {'form':form,'books':book_list}
-    return render(request, 'books/suggestBook.html' )
+    return render(request, 'books/suggestBook.html', context )
 
 
 

@@ -35,4 +35,6 @@ class SearchForm(ModelForm):
     class Meta:
         model = Book
         # fields = "__all__"
-        exclude = ['created_at','photo', 'name']
+        exclude = ['photo']
+
+        

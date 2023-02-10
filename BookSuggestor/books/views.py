@@ -95,7 +95,14 @@ def bookSuggestor(request):
 
 
 def bookSearch(request):
-    return HttpResponse("CALL CHAI VAXA HAI")
+    sf = SearchForm(request.POST)
+    if sf.is_valid:
+        liked = sf.cleaned_data["name"]
+        author = sf.cleaned_data['author']
+        genre = sf.cleaned_data['genre']
+        
+        print(liked,author,genre)
+    return HttpResponse("HELLO") 
 
 
 

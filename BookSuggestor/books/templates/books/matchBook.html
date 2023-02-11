@@ -1,10 +1,26 @@
-{% {% extends 'base.html' %} %}
-
+{%  extends 'base.html'  %}
+{% load mytags %}
 
 {% block title %}
+Results
 {% endblock %}
 
 {% block content %}
 
+{% comment %} {% for key,value in matching.items %} {% endcomment %}
+
+{% comment %} {{value.id}} {% endcomment %}
+{% comment %} < href="{% url 'search' id={{value.id}} %}"> {% endcomment %}
+{% comment %} {{key}}
+
+{{value|safe}} {% endcomment %}
+{% for key,value in matching.items %}
+<a href="{% url 'detail' value|get_by_index:'id' %}">
+{{key}}
+</a>
+<hr>
+
+
+{% endfor %}
 {% endblock %}
 

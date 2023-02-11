@@ -14,7 +14,8 @@ class AuthorForm(ModelForm):
 class GenreForm(ModelForm):
     class Meta:
         model = Genre
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ["photo"]
         labels={
             'type':'Book Genre'
         }

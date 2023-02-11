@@ -139,7 +139,11 @@ def bookSearch(request):
         matching = {}
         cursor.execute("SELECT author_id,genre_id FROM books_book WHERE name=%s",[liked])
         # books = dictfetchall(cursor)
-        auth_id,gen_id = cursor.fetchone()
+        if cursor.fetchone():
+            auth_id,gen_id = cursor.fetchone()
+        else:
+            cursor.execute("Select author_id, genre_id from books_book")
+            auth_id,gen_id = cursor.fetchone()    
 
         cursor.execute("Select * from books_book where author_id=%s or genre_id=%s",[auth_id,gen_id])
         books = dictfetchall(cursor)
@@ -165,15 +169,24 @@ def bookSearch(request):
         print("ALL MATCHING BOOKS ARE:\n",matching)
 
         count = len(matching)
-        context = {'count':count, "matching":matching}
-
-
-        
-    return render(request, 'books/matchBook.html', context)
 
 
 
-def bookDetails(request):
-    pass
+    # return HttpResponse("hello")
+    return render(request, 'books/matchBook.html', {'matching':matching})
 
 
+def bookDetails(request, id):
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM books_book where id = %s",[id])
+    book = dictfetchall(cursor)
+    context = {}
+    for detail in book:
+        context['name'] = detail["name"] 
+        cursor.execute("Select aname from books_author where id=%s",[detail['author_id']])
+        context["author"] = cursor.fetchone()[0]
+        cursor.execute("Select type from books_genre where id=%s",[detail['genre_id']])
+        context["genre"] = cursor.fetchone()[0]
+        print(context)
+    return render(request,'books/bookDetail.html', context )

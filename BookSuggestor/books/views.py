@@ -95,13 +95,23 @@ def bookSuggestor(request):
 
 
 def bookSearch(request):
+    cursor = connection.cursor()
     sf = SearchForm(request.POST)
     if sf.is_valid():
         liked = sf.cleaned_data["name"]
         author = sf.cleaned_data['author']
         genre = sf.cleaned_data['genre']
+
+        matching = {}
+        cursor.execute("SELECT * FROM books_book WHERE name=%s",[liked.upper()])
+        books = dictfetchall(cursor)
+        print("Liked Books:",books)
+        for book in books:
+            if book['name'] not in matching:
+                matching[book['name']] = book
+        print("matching from liked ones:",matching)
+
         
-        print(liked,author,genre)
     return HttpResponse("HELLO") 
 
 

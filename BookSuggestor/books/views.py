@@ -116,48 +116,6 @@ def bookSearch(request):
 
 
 
-# def bookSearch(request):
-#     with connection.cursor() as cursor:
-#         books = []
-#         form = SearchForm(request.POST)
-#         if form.is_valid():
-#             liked = form.cleaned_data['name']
-#             genre = form.cleaned_data["genre"]
-#             author = form.cleaned_data["author"]
-
-        
-
-#             #Book.objects.get(name=liked)
-#             cursor.execute("SELECT * FROM books_book where name=%s",[liked])
-#             bk_likes_dict = dictfetchall(cursor)
-
-#             for book in bk_likes_dict:
-#                 books.append(book.name)
-
-#             # Book.objects.get(genre=genre)
-#             cursor.execute("SELECT id FROM books_genre WHERE genre=%s",[genre])
-#             g_id = cursor.fetchone()
-#             cursor.execute("SELECT name FROM books_book WHERE genre_id=%s",[g_id])
-#             book_g = cursor.fetchone()
-
-#             # bk_genres = dictfetchall(cursor)
-
-#             # Book.objects.get(author=author)
-#             cursor.execute("SELECT id FROM books_author where aname=%s",[author])
-#             a_id = cursor.fetchone()
-#             cursor.execute("SELECT name FROM books_book WHERE genre_id=%s",[g_id])
-#             book_g = cursor.fetchone()
-#             print(a_id)
-#             # cursor.execute("SELECT * FROM books_book where author=%s",[author])
-#             # bk_authors = dictfetchall(cursor)
-            
-#             print(bk_likes_dict)
-
-#         context = {}
-#     return render(request, 'books/matchBook.html',)
-
-
-
 def bookDetails(request):
     pass
 

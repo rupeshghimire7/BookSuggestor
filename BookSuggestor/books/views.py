@@ -162,18 +162,14 @@ def bookSearch(request):
         for book in Genre_books:
             if book['name'] not in matching:
                 matching[book["name"]] = book
-
         print("ALL MATCHING BOOKS ARE:\n",matching)
 
-
-        
-
-
-
+        count = len(matching)
+        context = {'count':count, "matching":matching}
 
 
         
-    return HttpResponse("HELLO") 
+    return render(request, 'books/matchBook.html', context)
 
 
 

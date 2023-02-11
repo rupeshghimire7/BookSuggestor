@@ -130,19 +130,37 @@ def bookSearch(request):
     cursor = connection.cursor()
     sf = SearchForm(request.POST)
     if sf.is_valid():
-        liked = sf.cleaned_data["name"]
+        liked = sf.cleaned_data["name"].upper()
         author = sf.cleaned_data['author']
+        print("Author is: ",author)
         genre = sf.cleaned_data['genre']
+        print("Genre is:",genre)
 
         matching = {}
-        cursor.execute("SELECT author_id,genre_id FROM books_book WHERE name=%s",[liked.upper()])
+        cursor.execute("SELECT author_id,genre_id FROM books_book WHERE name=%s",[liked])
         # books = dictfetchall(cursor)
         auth_id,gen_id = cursor.fetchone()
-        print("Author id",auth_id,"Genre Id",gen_id)
-        # for book in books:
-        #     if book['name'] not in matching:
-        #         matching[book['name']] = book
-        # print("matching from liked ones:",matching)
+
+        cursor.execute("Select * from books_book where author_id=%s or genre_id=%s",[auth_id,gen_id])
+        books = dictfetchall(cursor)
+        print(books)
+        for book in books:
+            if book['name'] not in matching:
+                matching[book["name"]] = book
+        print("Matching:",matching)
+
+        cursor.execute("Select * from books_book where author_id=(select id from books_author where aname=%s)",[author])
+        Author_books = dictfetchall(cursor)
+        print("Author Books:",Author_books)
+        for book in Author_books:
+            if book['name'] not in matching:
+                matching[book["name"]] = book
+
+        
+
+
+
+
 
         
     return HttpResponse("HELLO") 

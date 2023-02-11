@@ -136,8 +136,9 @@ def bookSearch(request):
 
         matching = {}
         cursor.execute("SELECT author_id,genre_id FROM books_book WHERE name=%s",[liked.upper()])
-        books = dictfetchall(cursor)
-        print("Liked Books:",books)
+        # books = dictfetchall(cursor)
+        auth_id,gen_id = cursor.fetchone()
+        print("Author id",auth_id,"Genre Id",gen_id)
         # for book in books:
         #     if book['name'] not in matching:
         #         matching[book['name']] = book

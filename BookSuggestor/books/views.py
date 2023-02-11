@@ -132,9 +132,9 @@ def bookSearch(request):
     if sf.is_valid():
         liked = sf.cleaned_data["name"].upper()
         author = sf.cleaned_data['author']
-        print("Author is: ",author)
+        # print("Author is: ",author)
         genre = sf.cleaned_data['genre']
-        print("Genre is:",genre)
+        # print("Genre is:",genre)
 
         matching = {}
         cursor.execute("SELECT author_id,genre_id FROM books_book WHERE name=%s",[liked])
@@ -147,14 +147,24 @@ def bookSearch(request):
         for book in books:
             if book['name'] not in matching:
                 matching[book["name"]] = book
-        print("Matching:",matching)
+        # print("Matching:",matching)
 
         cursor.execute("Select * from books_book where author_id=(select id from books_author where aname=%s)",[author])
         Author_books = dictfetchall(cursor)
-        print("Author Books:",Author_books)
+        # print("Author Books:",Author_books)
         for book in Author_books:
             if book['name'] not in matching:
                 matching[book["name"]] = book
+
+
+        cursor.execute("Select * from books_book where genre_id = (select id from  books_genre where type=%s)",[genre])
+        Genre_books = dictfetchall(cursor)
+        for book in Genre_books:
+            if book['name'] not in matching:
+                matching[book["name"]] = book
+
+        print("ALL MATCHING BOOKS ARE:\n",matching)
+
 
         
 

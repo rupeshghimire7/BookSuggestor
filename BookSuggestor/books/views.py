@@ -96,7 +96,7 @@ def bookSuggestor(request):
 
 def bookSearch(request):
     sf = SearchForm(request.POST)
-    if sf.is_valid:
+    if sf.is_valid():
         liked = sf.cleaned_data["name"]
         author = sf.cleaned_data['author']
         genre = sf.cleaned_data['genre']

@@ -14,24 +14,45 @@ def dictfetchall(cursor):
     ]
 
 
+def getgenre():
+    cursor = connection.cursor()
+    cursor.execute("Select type from books_genre")
+    allTypes = dictfetchall(cursor)
+    genres = [genre['type'].upper() for genre in allTypes]
+    print("All Genres:",genres)
+    return genres
+
+
+def getauthors():
+    cursor = connection.cursor()
+    cursor.execute("Select aname from books_author")
+    allAuthors = dictfetchall(cursor)
+    authors = [author['aname'].upper() for author in allAuthors]
+    print("All Authors:",authors)
+
+    return authors
+
+
+
+
 def getbooks():
-    cursor= connection.cursor()
+    cursor = connection.cursor()
     # books = Book.objects.all()
     cursor.execute("SELECT * FROM books_book")
     books = dictfetchall(cursor)
-    print(books)
+    # print(books)
     # cursor.execute("SELECT id from books_author ")
     book_list = []
     for book in books:
-        print(book)
+        # print(book)
         cursor.execute("SELECT aname from books_author WHERE id=%s",[book['author_id']])
         anames = dictfetchall(cursor)
-        print(anames)
+        # print(anames)
         if (book["name"].upper() in book_list):
             pass
         else:
             book_list.append(book["name"].upper())
-    print(book_list)
+    # print(book_list)
 
     return book_list
 
@@ -39,6 +60,8 @@ def getbooks():
 def addData(request):
     cursor = connection.cursor()
     book_names = getbooks()
+    allAuthors = getauthors()
+    allTypes = getgenre()
     count = len(book_names)
 
 
@@ -61,18 +84,27 @@ def addData(request):
             else: 
                 # a = Author.objects.create(aname=auth_name.upper())
                 # a.save()
-                cursor.execute("INSERT into books_author (aname) VALUES (%s)", [auth_name.upper()])
+
+                if auth_name.upper() not in allAuthors:
+                    cursor.execute("INSERT into books_author (aname) VALUES (%s)", [auth_name.upper()])
                 cursor.execute("SELECT id FROM books_author WHERE aname=%s",[auth_name.upper()])
                 a = cursor.fetchone()
                 print("author id : ",a)
+
+
     #             # g = Genre.objects.create(type=gen_type.upper())
     #             # g.save()
-                cursor.execute("INSERT into books_genre (type) VALUES (%s)", [gen_type.upper()])
+
+                if gen_type.upper() not in allTypes:
+                    cursor.execute("INSERT into books_genre (type) VALUES (%s)", [gen_type.upper()])
                 cursor.execute("SELECT id FROM books_genre WHERE type=%s",[gen_type.upper()])
                 g = cursor.fetchone()
 
-
-                cursor.execute("INSERT into books_book (name,author_id,genre_id) VALUES(%(name)s, %(a)s, %(g)s)",{'name':b.name.upper(), 'a':a, 'g':g})
+                print("allBooks: ",book_names)
+                if b.name.upper() not in book_names:
+                    cursor.execute("INSERT into books_book (name,author_id,genre_id) VALUES(%(name)s, %(a)s, %(g)s)",{'name':b.name.upper(), 'a':a, 'g':g})
+                else:
+                    print("This Book is already in database.")    
     else:
         af = AuthorForm()
         bf = BookForm()
@@ -103,13 +135,13 @@ def bookSearch(request):
         genre = sf.cleaned_data['genre']
 
         matching = {}
-        cursor.execute("SELECT * FROM books_book WHERE name=%s",[liked.upper()])
+        cursor.execute("SELECT author_id,genre_id FROM books_book WHERE name=%s",[liked.upper()])
         books = dictfetchall(cursor)
         print("Liked Books:",books)
-        for book in books:
-            if book['name'] not in matching:
-                matching[book['name']] = book
-        print("matching from liked ones:",matching)
+        # for book in books:
+        #     if book['name'] not in matching:
+        #         matching[book['name']] = book
+        # print("matching from liked ones:",matching)
 
         
     return HttpResponse("HELLO") 

@@ -139,11 +139,16 @@ def bookSearch(request):
         matching = {}
         cursor.execute("SELECT author_id,genre_id FROM books_book WHERE name=%s",[liked])
         # books = dictfetchall(cursor)
-        if cursor.fetchone():
-            auth_id,gen_id = cursor.fetchone()
+        id_list = cursor.fetchone()
+        if id_list:
+            id_list = list(id_list)
         else:
             cursor.execute("Select author_id, genre_id from books_book")
-            auth_id,gen_id = cursor.fetchone()    
+            id_list = list(cursor.fetchone())
+
+        auth_id = id_list[0]
+        gen_id = id_list[1]
+   
 
         cursor.execute("Select * from books_book where author_id=%s or genre_id=%s",[auth_id,gen_id])
         books = dictfetchall(cursor)

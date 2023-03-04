@@ -56,10 +56,25 @@ def getbooks():
 
     return book_list
 
+def allBooks():
+    cursor = connection.cursor()
+    book_list = getbooks()
+    allBooks_dict = {}
+    for book in book_list:
+        cursor.execute("SELECT * FROM books_book WHERE name=%s",[book])
+        book_data = dictfetchall(cursor)
+        for item in book_data:
+            name=item['name']
+            allBooks_dict[name] = item
+        # print("SINGLE BOOK LIST:",book_data)
+    # print("ALL BOOKS: ",allBooks_dict)
+    return(allBooks_dict)
+
+
 
 def addData(request):
     cursor = connection.cursor()
-    book_names = getbooks()
+    book_names = allBooks()
     allAuthors = getauthors()
     allTypes = getgenre()
     count = len(book_names)
@@ -119,6 +134,7 @@ def addData(request):
 
 
 def bookSuggestor(request):
+
     form = SearchForm()
     book_list = getbooks()
     context = {'form':form,'books':book_list}
@@ -201,13 +217,7 @@ def bookDetails(request, id):
 def updateBook(request,id):
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM books_book where id = %s",[id])
-    book = dictfetchall(cursor)
-    context = {}
-    for detail in book:
-        context['name'] = detail["name"] 
-        cursor.execute("Select aname from books_author where id=%s",[detail['author_id']])
-        context["author"] = cursor.fetchone()[0]
-        cursor.execute("Select type from books_genre where id=%s",[detail['genre_id']])
-        context["genre"] = cursor.fetchone()[0]
-        print(context)
-    return render(request,'books/updateBook.html', context )
+    book = cursor.fetchone()
+    print(book)
+
+    render(request, 'books/updateBook.html', {'book':book})

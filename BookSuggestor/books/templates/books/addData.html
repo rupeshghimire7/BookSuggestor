@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load mytags %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -33,25 +35,14 @@
 </form>
 
 <h3>ALL BOOKS AVAILABLE ARE:</h3>
-<table>
 
-    <tr>
-        <th>S.No.</th>
-        <th>Book Name</th>
-        <th>Author</th>
-        <th>Genre</th>
-    </tr>
 
-    {% for book in books %}
-    <tr>
-        <td>{{book}}</td>
-        <td>{{book.name}}</td>
-        <td>{{book.author}}</td>
-        <td>{{book.genre}}</td>
-    </tr>
+    {% for book in books %} 
+        {{book}} <a href="{% url 'update' book.id %}">Update</a>
+        <hr>
     {% endfor %}
 
-</table>
+
 
 
 </body>

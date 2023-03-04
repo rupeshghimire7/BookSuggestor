@@ -6,9 +6,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 # Create your models here.
 class Author(models.Model):
     aname = models.CharField(max_length=100,null=False, blank=False)
-    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    # object_id = models.PositiveIntegerField()
-    # content_object = GenericForeignKey()
 
 
     def __str__(self):
@@ -17,9 +14,6 @@ class Author(models.Model):
 
 class Genre(models.Model):
     type = models.CharField(max_length=50, null=False, blank=False)
-    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    # object_id = models.PositiveIntegerField()
-    # content_object = GenericForeignKey()
     
     def __str__(self) -> str:
         return self.type

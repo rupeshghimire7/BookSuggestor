@@ -195,3 +195,19 @@ def bookDetails(request, id):
         context["genre"] = cursor.fetchone()[0]
         print(context)
     return render(request,'books/bookDetail.html', context )
+
+
+
+def updateBook(request,id):
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM books_book where id = %s",[id])
+    book = dictfetchall(cursor)
+    context = {}
+    for detail in book:
+        context['name'] = detail["name"] 
+        cursor.execute("Select aname from books_author where id=%s",[detail['author_id']])
+        context["author"] = cursor.fetchone()[0]
+        cursor.execute("Select type from books_genre where id=%s",[detail['genre_id']])
+        context["genre"] = cursor.fetchone()[0]
+        print(context)
+    return render(request,'books/updateBook.html', context )

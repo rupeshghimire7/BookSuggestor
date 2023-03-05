@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load mytags %}
+
+Updating Book: 
+
+{% block content%}
+
+{% if book %}
+
+{{ book.title }}
+{{ book.author }}
+{{ book.genre }}
+
+<form action="{% url 'update' id %}" method="POST">
+{% csrf_token %}
+{% for field in form %}
+{{ field.label_tag }} {{ field }}
+<br>
+{% endfor %}
+
+<input type="submit" value="Update Book">
+<input type="button" value="Cancel" onclick="window.location.href='{% url 'suggestor' %}'">
+{% endif %}
+
+{% endblock %}

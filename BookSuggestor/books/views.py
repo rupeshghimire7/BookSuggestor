@@ -215,6 +215,9 @@ def bookDetails(request, id):
 
 
 def updateBook(request,id):
+    
+    #GETTING THE DATA FROM THE DATABASE
+
     print("The id is:",id)
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM books_book where id = %s",[id])
@@ -225,9 +228,36 @@ def updateBook(request,id):
     author = cursor.fetchone()[0]
     cursor.execute("Select type from books_genre where id=%s",[book[4]])
     genre = cursor.fetchone()[0]
+
+
+    #SENDING OUT THE FORM WITH THE DATA FOR UPDATING
+
     print("The title is: ",title)
     print("The author is: ",author)
     print("The genre is: ",genre)
+    book1 = Book.objects.get(id=id)
+    print(type(book1))
+    print("The book is: ",book1)
+    form = SearchForm(request.POST, instance=book1)
+    print(type(id))
+    book = {'title':title, 'author':author, 'genre':genre }
 
-    book = {'title':title, 'author':author, 'genre':genre}
-    return render(request, 'books/updateBook.html', {'book':book})
+
+    #UPDATING THE DATA
+
+    if request.method == 'POST':
+        if form.is_valid():
+            name = form.cleaned_data['name'].upper()
+            author_new = form.cleaned_data['author']
+            genre_new = form.cleaned_data['genre']
+            print("The name is: ",name)
+            print("The author is: ",author_new)
+            print("The genre is: ",genre_new)
+        if name != title:
+            cursor.execute("UPDATE books_book SET name=%s WHERE id=%s",[name,id])
+        if author_new != author:
+            cursor.execute("UPDATE books_book SET author_id=(SELECT id FROM books_author WHERE aname=%s) WHERE id=%s",[author_new,id])
+        if genre_new != genre:
+            cursor.execute("UPDATE books_book SET genre_id=(SELECT id FROM books_genre WHERE type=%s) WHERE id=%s",[genre_new,id])
+            return redirect('add')
+    return render(request, 'books/updateBook.html', {'book':book, 'form':form, 'id':id})

@@ -215,7 +215,7 @@ def bookDetails(request, id):
 
 
 def updateBook(request,id):
-    
+
     #GETTING THE DATA FROM THE DATABASE
 
     print("The id is:",id)
@@ -261,3 +261,11 @@ def updateBook(request,id):
             cursor.execute("UPDATE books_book SET genre_id=(SELECT id FROM books_genre WHERE type=%s) WHERE id=%s",[genre_new,id])
             return redirect('add')
     return render(request, 'books/updateBook.html', {'book':book, 'form':form, 'id':id})
+
+
+
+
+def deleteBook(request, id):
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM books_book WHERE id=%s",[id])
+    return redirect('add')

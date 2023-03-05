@@ -45,7 +45,7 @@
         {% endfor %} {% endcomment %}
         
         <a href="{% url 'update' value|get_by_index:'id' %}">Update</a>
-        {{value|get_by_index:'id'}}
+        <a href="{% url 'delete' value|get_by_index:'id' %}">Delete</a>
         <hr>
     {% endfor %}
 

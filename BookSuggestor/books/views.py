@@ -215,9 +215,19 @@ def bookDetails(request, id):
 
 
 def updateBook(request,id):
+    print("The id is:",id)
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM books_book where id = %s",[id])
     book = cursor.fetchone()
-    print(book)
+    print("The book is: ",book)
+    title = book[1]
+    cursor.execute("Select aname from books_author where id=%s",[book[3]])
+    author = cursor.fetchone()[0]
+    cursor.execute("Select type from books_genre where id=%s",[book[4]])
+    genre = cursor.fetchone()[0]
+    print("The title is: ",title)
+    print("The author is: ",author)
+    print("The genre is: ",genre)
 
-    render(request, 'books/updateBook.html', {'book':book})
+    book = {'title':title, 'author':author, 'genre':genre}
+    return render(request, 'books/updateBook.html', {'book':book})

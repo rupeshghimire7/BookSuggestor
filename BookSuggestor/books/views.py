@@ -120,6 +120,7 @@ def addData(request):
                     cursor.execute("INSERT into books_book (name,author_id,genre_id) VALUES(%(name)s, %(a)s, %(g)s)",{'name':b.name.upper(), 'a':a, 'g':g})
                 else:
                     print("This Book is already in database.")    
+                return redirect('add')
     else:
         af = AuthorForm()
         bf = BookForm()
@@ -153,26 +154,8 @@ def bookSearch(request):
         # print("Genre is:",genre)
 
         matching = {}
-        cursor.execute("SELECT author_id,genre_id FROM books_book WHERE name=%s",[liked])
-        # books = dictfetchall(cursor)
-        id_list = cursor.fetchone()
-        if id_list:
-            id_list = list(id_list)
-        else:
-            cursor.execute("Select author_id, genre_id from books_book")
-            id_list = list(cursor.fetchone())
-
-        auth_id = id_list[0]
-        gen_id = id_list[1]
-   
-
-        cursor.execute("Select * from books_book where author_id=%s or genre_id=%s",[auth_id,gen_id])
-        books = dictfetchall(cursor)
-        print(books)
-        for book in books:
-            if book['name'] not in matching:
-                matching[book["name"]] = book
-        # print("Matching:",matching)
+        
+        #SELECTING MATCHING FROM Author NAME
 
         cursor.execute("Select * from books_book where author_id=(select id from books_author where aname=%s)",[author])
         Author_books = dictfetchall(cursor)
@@ -182,11 +165,37 @@ def bookSearch(request):
                 matching[book["name"]] = book
 
 
+        # SELECTING MATCHING FROM GENRE NAME
+
         cursor.execute("Select * from books_book where genre_id = (select id from  books_genre where type=%s)",[genre])
         Genre_books = dictfetchall(cursor)
         for book in Genre_books:
             if book['name'] not in matching:
                 matching[book["name"]] = book
+
+        
+
+        #SELECTING MATCHING FROM BOOK NAME
+
+        cursor.execute("SELECT author_id,genre_id FROM books_book WHERE name=%s",[liked])
+        # books = dictfetchall(cursor)
+        id_list = cursor.fetchone()
+        if id_list:
+            id_list = list(id_list)
+        else:
+            cursor.execute("SELECT id FROM books_author WHERE aname=%s",[author])
+            auth_id = cursor.fetchone()
+            cursor.execute("SELECT id FROM books_genre WHERE type=%s",[genre])
+            gen_id = cursor.fetchone()
+
+        
+        cursor.execute("Select * from books_book where author_id=%s or genre_id=%s",[auth_id,gen_id])
+        books = dictfetchall(cursor)
+        print(books)
+        for book in books:
+            if book['name'] not in matching:
+                matching[book["name"]] = book
+        # print("Matching:",matching)
         print("ALL MATCHING BOOKS ARE:\n",matching)
 
         count = len(matching)

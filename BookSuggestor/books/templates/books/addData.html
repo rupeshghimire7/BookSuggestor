@@ -37,8 +37,14 @@
 <h3>ALL BOOKS AVAILABLE ARE:</h3>
 
 
-    {% for book in books %} 
-        {{book}} <a href="{% url 'update' book.id %}">Update</a>
+    {% for key,value in books.items %} 
+        {{key}} 
+
+        {% comment %} {% for a,b in value.items %}
+        {{a}} : {{b}}
+        {% endfor %} {% endcomment %}
+        
+        <a href="{% url 'update' value|get_by_index:'id' %}">Update</a>
         <hr>
     {% endfor %}
 

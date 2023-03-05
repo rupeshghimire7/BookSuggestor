@@ -67,7 +67,7 @@ def allBooks():
             name=item['name']
             allBooks_dict[name] = item
         # print("SINGLE BOOK LIST:",book_data)
-    # print("ALL BOOKS: ",allBooks_dict)
+    print("ALL BOOKS: ",allBooks_dict)
     return(allBooks_dict)
 
 
@@ -134,7 +134,7 @@ def addData(request):
 
 
 def bookSuggestor(request):
-
+    allBooks()
     form = SearchForm()
     book_list = getbooks()
     context = {'form':form,'books':book_list}

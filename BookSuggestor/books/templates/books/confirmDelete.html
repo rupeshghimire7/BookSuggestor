@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+Confirm Delete?
+<a href="{% url 'delete' id %}">Yes</a>
+<a href="{% url 'add' %}">No</a>
+
+{% endblock %}

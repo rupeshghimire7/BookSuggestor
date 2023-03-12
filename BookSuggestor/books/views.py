@@ -272,7 +272,8 @@ def updateBook(request,id):
     return render(request, 'books/updateBook.html', {'book':book, 'form':form, 'id':id})
 
 
-
+def confirmDelete(request, id):
+    return render(request, 'books/confirmDelete.html', {'id':id})
 
 def deleteBook(request, id):
     cursor = connection.cursor()

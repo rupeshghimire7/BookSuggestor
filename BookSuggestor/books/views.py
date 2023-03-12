@@ -127,7 +127,6 @@ def addData(request):
         gf = GenreForm()
 
 
-
     context = {'books':book_names, 'authForm':af, 'bkForm':bf, 'genForm':gf,'count':count}
 
     return render(request, 'books/addData.html',context)
@@ -187,6 +186,10 @@ def bookSearch(request):
             auth_id = cursor.fetchone()
             cursor.execute("SELECT id FROM books_genre WHERE type=%s",[genre])
             gen_id = cursor.fetchone()
+            id_list = [auth_id,gen_id]
+        
+        auth_id = id_list[0]
+        gen_id = id_list[1]
 
         
         cursor.execute("Select * from books_book where author_id=%s or genre_id=%s",[auth_id,gen_id])
@@ -211,6 +214,7 @@ def bookDetails(request, id):
 
     cursor.execute("SELECT * FROM books_book where id = %s",[id])
     book = dictfetchall(cursor)
+    print(book)
     context = {}
     for detail in book:
         context['name'] = detail["name"] 

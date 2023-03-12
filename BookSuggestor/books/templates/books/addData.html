@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+
     <style>
         table,th,td{
             border: 2px solid black;
@@ -21,7 +24,8 @@
     <title>Add Data</title>
 </head>
 <body>
-    
+    <h2>Add Books:</h2>
+    <br>
     
 <form method="POST" enctype="multipart/form-data" action="{% url 'add' %}">
     {% csrf_token %}
@@ -33,8 +37,9 @@
     <input type="submit" style="color: blue;">
 
 </form>
-
+<hr>
 <h3>ALL BOOKS AVAILABLE ARE:</h3>
+<br>
 
 
     {% for key,value in books.items %} 
